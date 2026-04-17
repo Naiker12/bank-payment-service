@@ -1,0 +1,71 @@
+# Python Cache y Artefactos
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Entornos Virtuales
+venv/
+ENV/
+.env/
+.venv/
+env.bak/
+venv.bak/
+
+# Variables de entorno y credenciales (Archivos Delicados)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+certs/
+
+# IDEs y Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS File System
+.DS_Store
+Thumbs.db
+
+# Infraestructura local / Terraform y Cache
+.pytest_cache/
+.coverage
+htmlcov/
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+tfplan
+tfplan*
+*.zip
+
+# Serverless / AWS SAM
+.serverless/
+.aws-sam/
