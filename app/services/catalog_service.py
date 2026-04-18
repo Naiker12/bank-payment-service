@@ -21,7 +21,12 @@ def update_catalog(csv_content: str):
     pipe = client.pipeline()
     pipe.delete("catalog")
     for row in rows:
-        pipe.hset("catalog", row["ID"], json.dumps(row))
+        # Normalizar claves a mayúsculas para evitar errores de case-sensitivity (ID vs id)
+        normalized_row = {k.upper(): v for k, v in row.items()}
+        if "ID" in normalized_row:
+            pipe.hset("catalog", normalized_row["ID"], json.dumps(row))
+        else:
+            logger.warning(f"Fila sin ID omitida: {row}")
     pipe.execute()
 
     logger.info(f"catalog_service: {len(rows)} servicios sincronizados")
