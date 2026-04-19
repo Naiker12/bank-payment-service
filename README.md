@@ -2,7 +2,17 @@
 
 Microservicio de pagos para Digital Bank. Gestiona el catálogo de servicios y procesa pagos mediante una cadena de Lambdas orquestada por SQS.
 
-## Arquitectura
+## 📋 Resumen de Arquitectura
+
+Siguiendo la **Guía Definitiva de Arquitectura EDA**, este servicio se integra de la siguiente manera:
+
+| Servicio | Rol Principal | Tecnología | Enlace con Datos |
+|---|---|---|---|
+| **Payment Service** | API Gateway / Orquestador | Python / Lambda | Redis (Catálogo) / DynamoDB (Pagos) |
+| **Notification Service** | Procesador de Colas (Workers) | Python / Lambda | SQS (start, check, transaction) |
+| **Card Transaction** | Core Bancario / Débito | Java / Spring Boot | DynamoDB (Tarjetas) |
+
+## Arquitectura Detallada
 
 ```
 POST /catalog/update → catalog_update (S3 + Redis)
