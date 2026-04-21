@@ -22,12 +22,17 @@ def _get_card(card_id):
 def _extract_price(service):
     """
     Extrae el precio numérico del objeto servicio del catálogo.
+    Soporta formatos PascalCase (API) y camelCase (Frontend Normalizado).
     """
     try:
-        price_str = service.get("Precio", service.get("precio", "0"))
+        # Intentar con múltiples posibles llaves (normalizadas y originales)
+        price_str = service.get("precio_mensual", 
+                    service.get("Precio", 
+                    service.get("precio", "0")))
+        
         # Limpiar símbolos de moneda y convertir a float
         clean_price = "".join(c for c in str(price_str) if c.isdigit() or c == '.')
-        return float(clean_price)
+        return float(clean_price) if clean_price else 0.0
     except Exception as e:
-        logger.error(f"Error extracting price: {str(e)}")
+        logger.error(f"Error extracting price from {service}: {str(e)}")
         return 0.0

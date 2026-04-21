@@ -47,12 +47,9 @@ certs/
 .DS_Store
 Thumbs.db
 
-# Infraestructura local / Terraform y Cache
-terraform/
-.terraform/
-.pytest_cache/
-.coverage
-htmlcov/
+# Infraestructura como Código: Terraform
+# La carpeta terraform/ SÍ se sube al repo (contiene los .tf)
+# Solo se ignoran los archivos generados/transitorios:
 .terraform/
 *.tfstate
 *.tfstate.*
@@ -67,6 +64,11 @@ override.tf.json
 tfplan
 tfplan*
 *.zip
+
+# Python Testing Cache
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Serverless / AWS SAM
 .serverless/
