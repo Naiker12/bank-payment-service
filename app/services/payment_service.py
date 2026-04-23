@@ -1,6 +1,7 @@
 import os
-import httpx
+import json
 import logging
+from urllib import error, request
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -9,15 +10,29 @@ CARD_API_URL = os.getenv("CARD_API_URL", "")
 
 def _get_card(card_id):
     """
-    Consulta los detalles de una tarjeta en el servicio de tarjetas (Legacy).
+    Consulta los detalles de una tarjeta en el servicio de tarjetas.
     """
-    try:
-        response = httpx.get(f"{CARD_API_URL}/cards/{card_id}", timeout=5.0)
-        response.raise_for_status()
-        return response.json()
-    except Exception as e:
-        logger.error(f"Error fetching card {card_id}: {str(e)}")
-        return None
+    candidate_paths = [
+        f"/card/info/{card_id}",
+        f"/cards/{card_id}",
+    ]
+
+    last_error = None
+    for path in candidate_paths:
+        try:
+            req = request.Request(f"{CARD_API_URL}{path}", method="GET")
+            with request.urlopen(req, timeout=5.0) as response:
+                payload = response.read().decode("utf-8")
+                return json.loads(payload)
+        except error.HTTPError as exc:
+            last_error = exc
+            if exc.code == 404:
+                continue
+        except Exception as exc:
+            last_error = exc
+
+    logger.error(f"Error fetching card {card_id}: {str(last_error)}")
+    return None
 
 def _extract_price(service):
     """

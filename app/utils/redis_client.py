@@ -27,11 +27,4 @@ class RedisStateManager:
         data = self.client.get(key)
         return json.loads(data) if data else None
 
-    def cache_catalog(self, catalog_data):
-        self.client.set("catalog", json.dumps(catalog_data))
-
-    def get_cached_catalog(self):
-        data = self.client.get("catalog")
-        return json.loads(data) if data else None
-
 redis_manager = RedisStateManager()
